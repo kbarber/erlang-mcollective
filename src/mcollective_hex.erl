@@ -1,4 +1,10 @@
--module(hex).
+%% --------------------------
+%% @copyright 2010 Bob.sh
+%% @doc Utility function for hexadecimal manipulation
+%%
+%% @end
+%% --------------------------
+-module(mcollective_hex).
 -export([bin_to_hexstr/1,hexstr_to_bin/1]).
 
 bin_to_hexstr(Bin) ->

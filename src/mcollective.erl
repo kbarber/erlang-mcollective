@@ -9,7 +9,7 @@ test() ->
 	Senderid = <<"obelisk.usr.bob.sh">>,
 	Requestid = list_to_binary(
         string:to_lower(
-            hex:bin_to_hexstr(
+            mcollective_hex:bin_to_hexstr(
                 crypto:md5(integer_to_list(Time))
             )
         )
