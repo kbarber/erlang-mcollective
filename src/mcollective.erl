@@ -39,20 +39,44 @@ test() ->
     Hash = base64:encode(HashRaw),
 
     % Start to create the YAML data structure
-	Request = [
-		{<<":msgtime">>, Time},
-		{<<":filter">>, [
+    Request = [
+        {<<":msgtime">>, Time},
+        {<<":filter">>, [
             { <<"identity">>, [] },
             { <<"fact">>, [] },
             { <<"agent">>, [] },
             { <<"cf_class">>, [] }
-        ]},
-		{<<":requestid">>, Requestid},
-		{<<":callerid">>, Callerid},
-		{<<":senderid">>, Senderid},
-		{<<":body">>, Body},
-		{<<":msgtarget">>, Msgtarget},
-		{<<":hash">>, Hash}
-	],
+         ]},
+        {<<":requestid">>, Requestid},
+        {<<":callerid">>, Callerid},
+        {<<":senderid">>, Senderid},
+        {<<":body">>, Body},
+        {<<":msgtarget">>, Msgtarget},
+        {<<":hash">>, Hash}
+    ],
 
-	io:format("~s~n", [yaml:encode(Request)]).
+    % Convert to YAML text
+    Yamlmsg = io_lib:format("~s", [yaml:encode(Request)]),
+    io:format("Message is: ~n~s~n", [Yamlmsg]),
+
+    % Connect to STOMP
+    Conn = stomp:connect("localhost", 61613, "", ""),
+    
+    % Subscribe to reply
+    io:format("Subscribing to reply channel~n"),
+    stomp:subscribe("/topic/mcollective_dev.discovery.reply", Conn),
+    
+    % Send message
+    io:format("Sending message~n"),
+    stomp:send(Conn, "/topic/mcollective_dev.discovery.command", [], Yamlmsg),
+
+    % Get response
+    io:format("Getting message~n"),
+    Msgs = stomp:get_messagesq(Conn),
+    io:format("Got messages: ~n~p~n", Msgs),
+
+    % Disconnect
+    io:format("Disconnecting~n"),
+    stomp:disconnect(Conn),
+
+    ok.
