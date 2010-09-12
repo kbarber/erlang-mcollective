@@ -10,6 +10,7 @@ Prerequisites
 -------------
 * erlang R14A
   - kernel, stdlib, sasl
+* erlang-yaml (from http://github.com/bobsh/erlang-yaml)
 
 Compilation
 -----------
@@ -35,11 +36,6 @@ TODO
 Copyright and License
 =====================
 
-For now its:
-
-Copyright 2010 Kenneth E Barber
-
-Until further notice, although the plan is to have it belong to an organisation
-of some kind if I ever get around to assembling one.
+Copyright 2010 Bob.sh
 
 The license for this code is undecided as yet. Assume nothing.
